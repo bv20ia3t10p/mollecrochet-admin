@@ -32,7 +32,7 @@ export const useAuthService = () => {
 
                 message.success("Login successfully");
                 localStorage.setItem("user", JSON.stringify(userCredential));
-                navigate("/");
+                navigate("/manage");
             } catch (error: unknown) {
                 message.error("Failed to log you in");
                 throw error; // Ensures React Query knows the mutation failed
