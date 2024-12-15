@@ -3,5 +3,13 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  "compilerOptions": {
+    "strict": false, // Disable strict mode (relax all checks)
+    "noImplicitAny": false, // Allow `any` types
+    "skipLibCheck": true, // Skip type checking of declaration files
+    "esModuleInterop": true, // Ensures proper imports
+    "moduleResolution": "node",
+    "resolveJsonModule": true
+  }
 }

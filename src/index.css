@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* App.css */
+.custom-sider .ant-layout-sider-trigger {
+  background: transparent !important; /* Change to your desired color */
+  border: none;
+  color: black;
+}
+
+.custom-sider .ant-layout-sider-trigger:hover {
+  background: transparent !important; /* Hover effect */
+}

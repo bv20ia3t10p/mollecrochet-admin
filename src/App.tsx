@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, useRoutes } from "react-router";
 import { Suspense } from "react";
-import { createRoutes } from "./routes";
+import { createRoutes } from "./routes/routes";
 import AntApp from "./AntApp";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 const queryClient = new QueryClient();
