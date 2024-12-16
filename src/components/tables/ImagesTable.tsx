@@ -9,7 +9,7 @@ import {
     deleteObject,
     getStorage,
 } from "firebase/storage";
-import { Button, Input, Table, Space, Modal, message, Tooltip, Row, Col } from "antd";
+import { Button, Input, Table, Space, Modal, message, Tooltip, Row, Col, Typography } from "antd";
 import { CopyOutlined, EyeOutlined } from "@ant-design/icons";
 import { FirebaseApp } from "../../utils/FireBase";
 import { Content } from "antd/es/layout/layout";
@@ -20,6 +20,7 @@ export const ImagesTable: React.FC = () => {
     const [fileToUpload, setFileToUpload] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [urlToCopy, setUrlToCopy] = useState<string | null>(null);
+    const [searchText, setSearchText] = useState<string>("");
 
     // Fetch files from Firebase Storage
     const fetchFiles = async () => {
@@ -64,12 +65,23 @@ export const ImagesTable: React.FC = () => {
         },
     });
 
-    // Ant Design table columns
+    // Ant Design table columns with sorter
     const columns = [
         {
             title: "File Name",
             dataIndex: "name",
             key: "name",
+            sorter: (a: any, b: any) => a.name.localeCompare(b.name),
+            filterDropdown: (
+                <Input
+                    placeholder="Search by file name"
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    style={{ width: 200 }}
+                />
+            ),
+            onFilter: (value: any, record: any) =>
+                record.name.toLowerCase().includes(value.toLowerCase()),
         },
         {
             title: "URL",
@@ -84,6 +96,7 @@ export const ImagesTable: React.FC = () => {
                     />
                 </Tooltip>
             ),
+            sorter: (a: any, b: any) => a.url.localeCompare(b.url),
         },
         {
             title: "Preview",
@@ -118,7 +131,7 @@ export const ImagesTable: React.FC = () => {
 
     return (
         <Content className="p-[2.5vw] shadow-xl rounded-xl bg-white">
-            <h1 style={{ fontSize: "2rem", textAlign: "center" }}>Firebase Storage Manager</h1>
+            <Typography.Title style={{ fontSize: "2rem", textAlign: "center" }}>Firebase Storage Manager</Typography.Title>
 
             {/* File Upload */}
             <Row gutter={[16, 16]} justify="center" style={{ marginBottom: 20 }}>
@@ -143,7 +156,9 @@ export const ImagesTable: React.FC = () => {
 
             {/* File List */}
             <Table
-                dataSource={files}
+                dataSource={files?.filter((file) =>
+                    file.name.toLowerCase().includes(searchText.toLowerCase())
+                )}
                 columns={columns}
                 rowKey="name"
                 loading={isLoading}
