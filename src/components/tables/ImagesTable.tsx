@@ -130,7 +130,7 @@ export const ImagesTable: React.FC = () => {
     };
 
     return (
-        <Content className="p-[2.5vw] shadow-xl rounded-xl bg-white">
+        <Content className="p-[2.5vw] rounded-md bg-white">
             <Typography.Title level={5}>Firebase Storage Manager</Typography.Title>
 
             {/* File Upload */}
