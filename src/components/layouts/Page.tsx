@@ -117,6 +117,7 @@ export const Page: React.FC<IProp> = ({ children }) => {
                         padding: '20px',
                         paddingTop: '8vh',
                         minHeight: '100vh',
+                        overflowX:'hidden'
                     }}
                 >
                     {children}
