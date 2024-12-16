@@ -1,0 +1,155 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+    ref,
+    uploadBytes,
+    listAll,
+    getDownloadURL,
+    deleteObject,
+    getStorage,
+} from "firebase/storage";
+import { Button, Input, Table, Space, Modal, message } from "antd";
+import { FirebaseApp } from "../../utils/FireBase";
+const storage = getStorage(FirebaseApp);
+
+export const ImagesTable: React.FC = () => {
+    const queryClient = useQueryClient();
+    const [fileToUpload, setFileToUpload] = useState<File | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+    // Fetch files from Firebase Storage
+    const fetchFiles = async () => {
+        const storageRef = ref(storage);
+        const fileList = await listAll(storageRef);
+        const filePromises = fileList.items.map(async (item) => {
+            const url = await getDownloadURL(item);
+            return { name: item.name, url };
+        });
+        return Promise.all(filePromises);
+    };
+
+    const { data: files, isLoading } = useQuery({ queryKey: ["files"], queryFn: fetchFiles });
+
+    // Mutation for uploading a file
+    const uploadMutation = useMutation(
+        {
+            mutationFn: async (file: File) => {
+                const fileRef = ref(storage, file.name);
+                await uploadBytes(fileRef, file);
+            },
+            onSuccess: () => {
+                message.success("File uploaded successfully!");
+                queryClient.invalidateQueries({ queryKey: ["files"] }); // Refresh file list
+            },
+            onError: () => {
+                message.error("Error uploading file!");
+            },
+        }
+    );
+
+    // Mutation for deleting a file
+    const deleteMutation = useMutation(
+        {
+            mutationFn: async (fileName: any) => {
+                const fileRef = ref(storage, fileName);
+                await deleteObject(fileRef);
+            },
+            onSuccess: () => {
+                message.success("File deleted successfully!");
+                queryClient.invalidateQueries({ queryKey: ["files"] }); // Refresh file list
+            },
+            onError: () => {
+                message.error("Error deleting file!");
+            },
+        }
+    );
+
+    // Ant Design table columns
+    const columns = [
+        {
+            title: "File Name",
+            dataIndex: "name",
+            key: "name",
+        },
+        {
+            title: "URL",
+            dataIndex: "url",
+            key: "url",
+            render: (url: string) => (
+                <a href={url} target="_blank" rel="noopener noreferrer">
+                    {url}
+                </a>
+            ),
+        },
+        {
+            title: "Preview",
+            dataIndex: "url",
+            key: "preview",
+            render: (url: string) => (
+                <Button type="link" onClick={() => setPreviewUrl(url)}>
+                    Preview
+                </Button>
+            ),
+        },
+        {
+            title: "Actions",
+            key: "actions",
+            render: (_: any, record: { name: string }) => (
+                <Button
+                    type="link"
+                    danger
+                    onClick={() => deleteMutation.mutate(record.name)}
+                >
+                    Delete
+                </Button>
+            ),
+        },
+    ];
+
+    return (
+        <div style={{ padding: 20 }}>
+            <h1>Firebase Storage Manager</h1>
+
+            {/* File Upload */}
+            <Space direction="vertical" style={{ marginBottom: 20 }}>
+                <Input
+                    type="file"
+                    onChange={(e) => setFileToUpload(e.target.files ? e.target.files[0] : null)}
+                />
+                <Button
+                    type="primary"
+                    onClick={() => fileToUpload && uploadMutation.mutate(fileToUpload)}
+                    disabled={!fileToUpload || uploadMutation.isPending}
+                >
+                    {uploadMutation.isPending ? "Uploading..." : "Upload File"}
+                </Button>
+            </Space>
+
+            {/* File List */}
+            <Table
+                dataSource={files}
+                columns={columns}
+                rowKey="name"
+                loading={isLoading}
+                pagination={{ pageSize: 5 }}
+            />
+
+            {/* Image Preview Modal */}
+            <Modal
+                visible={!!previewUrl}
+                footer={null}
+                onCancel={() => setPreviewUrl(null)}
+                title="Image Preview"
+            >
+                {previewUrl && (
+                    <img
+                        src={previewUrl}
+                        alt="Preview"
+                        style={{ width: "100%", height: "auto" }}
+                    />
+                )}
+            </Modal>
+        </div>
+    );
+};

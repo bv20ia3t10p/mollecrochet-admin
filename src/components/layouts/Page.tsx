@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { Divider, Layout, Menu } from 'antd';
-import { UserOutlined, AppstoreAddOutlined, FileTextOutlined, HomeOutlined, CarOutlined } from '@ant-design/icons';
+import { Divider, Layout, Menu, Row, Typography } from 'antd';
+import { UserOutlined, AppstoreAddOutlined, FileTextOutlined, HomeOutlined, CarOutlined, PictureOutlined, BookOutlined, CommentOutlined, LogoutOutlined } from '@ant-design/icons';
 import { IProp } from '../../interfaces/IProp';
 import { useNavigate } from 'react-router';
 
@@ -14,6 +14,16 @@ export const Page: React.FC<IProp> = ({ children }) => {
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
+            <Row className='absolute z-10 w-[100vw] h-[6vh] bg-pink-600 flex items-center justify-center align-middle' align={'bottom'} justify={'start'}>
+                <Typography.Title level={5} className='font-sans'
+                    style={{
+                        color: 'white',
+                        letterSpacing: '1vw',
+                        fontStyle: 'italic'
+                    }}>
+                    Mollecrochet @ admin
+                </Typography.Title >
+            </Row>
             {/* Sidebar */}
             <Sider
                 collapsible
@@ -24,7 +34,8 @@ export const Page: React.FC<IProp> = ({ children }) => {
                 className="pt-[1vh] px-[0.5vw] custom-sider overflow-hidden"
                 color='primary'
                 style={{
-                    background: '#ffffff'
+                    background: '#ffffff',
+                    marginTop: '6vh'
                 }}
             >
                 <div className="w-full overflow-hidden">
@@ -50,6 +61,19 @@ export const Page: React.FC<IProp> = ({ children }) => {
                             case '4':
                                 navi("/manage/addresses");
                                 break;
+                            case '5':
+                                navi("/manage/images");
+                                break;
+                            case '6':
+                                navi("/manage/sizes");
+                                break;
+                            case '7':
+                                navi("/manage/comments");
+                                break;
+                            case '8':
+                                navi("/login");
+                                localStorage.clear();
+                                break;
                             default:
                                 navi("/manage");
                         }
@@ -70,6 +94,18 @@ export const Page: React.FC<IProp> = ({ children }) => {
                     <Menu.Item key="4" icon={<CarOutlined />}>
                         Addresses
                     </Menu.Item>
+                    <Menu.Item key="5" icon={<PictureOutlined />}>
+                        Images
+                    </Menu.Item>
+                    <Menu.Item key="6" icon={<BookOutlined />}>
+                        Sizes
+                    </Menu.Item>
+                    <Menu.Item key="7" icon={<CommentOutlined />}>
+                        Comments
+                    </Menu.Item>
+                    <Menu.Item key="8" icon={<LogoutOutlined />}>
+                        Logout
+                    </Menu.Item>
                 </Menu>
             </Sider>
 
@@ -79,6 +115,7 @@ export const Page: React.FC<IProp> = ({ children }) => {
                 <Content
                     style={{
                         padding: '20px',
+                        paddingTop: '8vh',
                         minHeight: '100vh',
                     }}
                 >

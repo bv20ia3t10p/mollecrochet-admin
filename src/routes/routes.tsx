@@ -9,6 +9,9 @@ import { AddressTable } from "../components/tables/AddressesTable";
 import Breadcrumbs from "../components/Breadcrumbs";
 import { Divider } from "antd";
 import Dashboard from "../components/Dashboard";
+import { CommentsTable } from "../components/tables/CommentTable";
+import { SizesTable } from "../components/tables/SizesTable";
+import { ImagesTable } from "../components/tables/ImagesTable";
 
 export const createRoutes = () => {
     const appRoutes = [
@@ -45,6 +48,18 @@ export const createRoutes = () => {
                 {
                     path: "addresses",
                     element: <AddressTable />
+                },
+                {
+                    path: "comments",
+                    element: <CommentsTable />
+                },
+                {
+                    path: "sizes",
+                    element: <SizesTable />
+                },
+                {
+                    path: "images",
+                    element: <ImagesTable />,
                 }
             ],
         },

@@ -3,6 +3,7 @@ import React from 'react';
 import { Table, Button, Input, Space, Modal, Tooltip, Form, Select, Row, Col } from 'antd';
 import { ColumnType } from 'antd/es/table';
 import { EditOutlined, DeleteOutlined, EyeOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
+
 interface DynamicTableProps {
     data: any[];
     isLoading: boolean;
@@ -12,7 +13,7 @@ interface DynamicTableProps {
     onCreate?: (newItem: any) => void;
     onEdit?: (updatedItem: any) => void;
     onDelete?: (id: string) => void;
-    sizes?: any[]
+    sizes?: any[];
 }
 
 const DynamicTable: React.FC<DynamicTableProps> = ({
@@ -26,10 +27,11 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     onDelete,
     sizes
 }) => {
-    const [isModalVisible, setIsModalVisible] = React.useState(false);
-    const [isEditMode, setIsEditMode] = React.useState(false);
+    const [isEditModalVisible, setIsEditModalVisible] = React.useState(false); // For create/edit modal
+    const [isPreviewModalVisible, setIsPreviewModalVisible] = React.useState(false); // For image preview modal
     const [currentItem, setCurrentItem] = React.useState<any>({});
     const [imageUrl, setImageUrl] = React.useState<string | null>(null);
+    const [isEditMode, setIsEditMode] = React.useState(false);
 
     if (!data || data.length === 0) {
         return <Table columns={[]} dataSource={[]} />;
@@ -57,7 +59,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
                         <Tooltip title="Click to view image">
                             <EyeOutlined
                                 style={{ cursor: 'pointer', color: 'blue' }}
-                                onClick={() => handleImageClick(text)}
+                                onClick={() => handleImagePreview(text)}
                             />
                         </Tooltip>
                     );
@@ -132,13 +134,13 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
         return false;
     };
 
-    const handleImageClick = (url: string) => {
+    const handleImagePreview = (url: string) => {
         setImageUrl(url);
-        setIsModalVisible(true);
+        setIsPreviewModalVisible(true);
     };
 
-    const handleCancel = () => {
-        setIsModalVisible(false);
+    const handleCancelPreview = () => {
+        setIsPreviewModalVisible(false);
         setImageUrl(null);
     };
 
@@ -148,8 +150,9 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
             setCurrentItem(item);
         } else {
             setIsEditMode(false);
+            setCurrentItem({});
         }
-        setIsModalVisible(true);
+        setIsEditModalVisible(true);
     };
 
     const handleDelete = (id: string) => {
@@ -162,7 +165,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
         } else {
             onCreate?.(currentItem);
         }
-        setIsModalVisible(false);
+        setIsEditModalVisible(false);
     };
 
     const handleSizeChange = (value: string) => {
@@ -223,15 +226,17 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
                 />
             )}
 
-            <Modal visible={isModalVisible} footer={null} onCancel={handleCancel}>
-                {imageUrl && <img src={imageUrl} alt="Image" />}
+            {/* Image Preview Modal */}
+            <Modal visible={isPreviewModalVisible} footer={null} onCancel={handleCancelPreview}>
+                {imageUrl && <img src={imageUrl} alt="Preview" style={{ width: '100%' }} />}
             </Modal>
 
+            {/* Create/Edit Modal */}
             <Modal
                 title={isEditMode ? 'Edit Item' : 'Create Item'}
-                visible={isModalVisible}
+                visible={isEditModalVisible}
                 onOk={handleSave}
-                onCancel={() => setIsModalVisible(false)}
+                onCancel={() => setIsEditModalVisible(false)}
                 destroyOnClose
             >
                 <Form>{renderFormFields()}</Form>
