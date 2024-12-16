@@ -11,7 +11,7 @@ export const OrderTable: React.FC = () => {
     // Filter products based on selected size
 
     return (
-        <Content className="p-[2.5vw] pt-[1.5vh] shadow-xl rounded-xl bg-white">
+        <Content className="p-[2.5vw]  shadow-xl rounded-xl bg-white">
             <Typography.Title level={5} >
                 Manage orders
             </Typography.Title>
