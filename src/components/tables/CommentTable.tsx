@@ -10,7 +10,7 @@ export const CommentsTable: React.FC = () => {
     const { data: users, isLoading: isLoadingUsers } = useFirestoreCollection('Users');
 
     const showingComments = comments?.map(c => {
-        console.log(products);
+        // console.log(products);
         const email = users?.filter(u => u.uid === c.uid)?.[0].email ?? '';
         const productName = products?.filter(p => p.id == c.productid)?.[0]?.title ?? '';
         return { ...c, email, productName }

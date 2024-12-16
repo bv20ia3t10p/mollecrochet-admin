@@ -13,7 +13,7 @@ const useRealtimeDatabaseCollection = (path: string) => {
             const dbRef = ref(db, path); // Reference to the path in Realtime Database
             const snapshot = await get(dbRef); // Get data from the reference
             if (snapshot.exists()) {
-                console.log("Data:", snapshot.val()); // Log the data
+                // console.log("Data:", snapshot.val()); // Log the data
                 const data = snapshot.val(); // Retrieve the data
                 
                 // Transform the data to include document names
@@ -24,7 +24,7 @@ const useRealtimeDatabaseCollection = (path: string) => {
     
                 return transformedData; // Return the transformed data
             } else {
-                console.log("No data found at this path.");
+                // console.log("No data found at this path.");
                 return []; // Return an empty array if no data is found
             }
         } catch (error) {
@@ -49,7 +49,7 @@ const useRealtimeDatabaseCollection = (path: string) => {
                     // Check if the last key is a valid number
                     newId = Number(lastKey) + 1; // Convert the key to a number and increment it
                 } else {
-                    console.log('Last key is not a valid number');
+                    // console.log('Last key is not a valid number');
                 }
             }
     
@@ -70,7 +70,7 @@ const useRealtimeDatabaseCollection = (path: string) => {
     // Mutation to update an existing item
     const updateItem = async (updatedItem: any) => {
         try {
-            console.log(updatedItem); // Log the incoming item for debugging
+            // console.log(updatedItem); // Log the incoming item for debugging
 
             // Destructure to exclude the 'id' property
             const { id, ...itemWithoutId } = updatedItem;
