@@ -14,6 +14,8 @@ interface DynamicTableProps {
     onEdit?: (updatedItem: any) => void;
     onDelete?: (id: string) => void;
     sizes?: any[];
+    showStatus?: boolean; // Optional prop to conditionally render the status field
+    handleChangeStatus?: (value: string, currentItem: any) => void; // Optional prop to handle status change
 }
 
 const DynamicTable: React.FC<DynamicTableProps> = ({
@@ -25,7 +27,9 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     onCreate,
     onEdit,
     onDelete,
-    sizes
+    sizes,
+    showStatus, // Destructure the new prop
+    handleChangeStatus // Destructure the optional prop
 }) => {
     const [isEditModalVisible, setIsEditModalVisible] = React.useState(false); // For create/edit modal
     const [isPreviewModalVisible, setIsPreviewModalVisible] = React.useState(false); // For image preview modal
@@ -172,6 +176,15 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
         setCurrentItem({ ...currentItem, size: value });
     };
 
+    const handleStatusChange = (value: string) => {
+        // If `handleChangeStatus` prop is passed, use it
+        if (handleChangeStatus) {
+            handleChangeStatus(value, currentItem);
+        } else {
+            setCurrentItem({ ...currentItem, status: value });
+        }
+    };
+
     const renderFormFields = () => {
         return Object.keys(objectWithMostProperties).map((key) => {
             const value = currentItem[key];
@@ -192,6 +205,25 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
                     </Form.Item>
                 );
             }
+
+            // Conditionally render the status field if showStatus is true
+            if (showStatus && key === 'status') {
+                return (
+                    <Form.Item label="Status" key={key}>
+                        <Select
+                            value={value}
+                            onChange={handleStatusChange}
+                            placeholder="Select Status"
+                        >
+                            <Select.Option value="Processing">Processing</Select.Option>
+                            <Select.Option value="Pending">Pending</Select.Option>
+                            <Select.Option value="Cancelled">Cancelled</Select.Option>
+                            <Select.Option value="Completed">Completed</Select.Option>
+                        </Select>
+                    </Form.Item>
+                );
+            }
+
             return (
                 <Form.Item label={key.charAt(0).toUpperCase() + key.slice(1)} key={key}>
                     <Input
@@ -209,10 +241,10 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
             {canCreate &&
                 <Row style={{ marginBottom: 16 }} className='items-end justify-end w-full'>
                     <Col>
-                        {<Button icon={<PlusOutlined />} onClick={() => {
+                        <Button icon={<PlusOutlined />} onClick={() => {
                             handleCreateEdit();
                             setCurrentItem({});
-                        }} type="primary">Create</Button>}
+                        }} type="primary">Create</Button>
                     </Col>
                 </Row>
             }
