@@ -25,7 +25,7 @@ export const CommentsTable: React.FC = () => {
     // Filter products based on selected size
 
     return (
-        <Content className="py-[1vh] flex items-center text-center align-middle justify-start rounded-md bg-white">
+        <Content className="py-[1vh] pt-[2vh] rounded-md bg-white">
             <Typography.Title level={5} style={{marginLeft:'24px'}} >
                 Manage comments
             </Typography.Title>
