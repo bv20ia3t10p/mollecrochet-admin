@@ -24,7 +24,7 @@ export const OrderTable: React.FC = () => {
     };
 
     return (
-        <Content className="py-[1vh] pt-[2.5vh] rounded-md rounded-md bg-white">
+        <Content className="py-[1vh] pt-[2.5vh] rounded-xl rounded-xl bg-white">
             <Typography.Title style={{marginLeft:'24px'}}  level={5}>
                 Manage orders
             </Typography.Title>

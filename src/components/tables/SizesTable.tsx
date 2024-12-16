@@ -27,7 +27,7 @@ export const SizesTable: React.FC = () => {
     // Filter products based on selected size
 
     return (
-        <Content className="py-[1vh] pt-[2.5vh] rounded-md  rounded-md bg-white">
+        <Content className="py-[1vh] pt-[2.5vh] rounded-xl  rounded-xl bg-white">
             <Typography.Title level={5} style={{marginLeft:'24px'}} >
                 Manage sizes
             </Typography.Title>
