@@ -110,7 +110,7 @@ const Dashboard: React.FC = () => {
                             percent={((uniqueOrderedUserCount ?? 1) / (usersCount ?? 1)) * 100}
                             status="active"
                             strokeColor="#52c41a"
-                            format={(percent) => `${percent}% of users have made their orders`}
+                            format={(percent) => `${percent}% users ordered`}
                         />
                     </Card>
                 </Col>
