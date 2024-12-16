@@ -9,7 +9,7 @@ import {
     deleteObject,
     getStorage,
 } from "firebase/storage";
-import { Button, Input, Table, Space, Modal, message, Tooltip } from "antd";
+import { Button, Input, Table, Space, Modal, message, Tooltip, Row, Col } from "antd";
 import { CopyOutlined, EyeOutlined } from "@ant-design/icons";
 import { FirebaseApp } from "../../utils/FireBase";
 import { Content } from "antd/es/layout/layout";
@@ -117,23 +117,29 @@ export const ImagesTable: React.FC = () => {
     };
 
     return (
-        <Content className="p-[2.5vw]  shadow-xl rounded-xl bg-white">
-            <h1>Firebase Storage Manager</h1>
+        <Content className="p-[2.5vw] shadow-xl rounded-xl bg-white">
+            <h1 style={{ fontSize: "2rem", textAlign: "center" }}>Firebase Storage Manager</h1>
 
             {/* File Upload */}
-            <Space direction="vertical" style={{ marginBottom: 20 }}>
-                <Input
-                    type="file"
-                    onChange={(e) => setFileToUpload(e.target.files ? e.target.files[0] : null)}
-                />
-                <Button
-                    type="primary"
-                    onClick={() => fileToUpload && uploadMutation.mutate(fileToUpload)}
-                    disabled={!fileToUpload || uploadMutation.isPending}
-                >
-                    {uploadMutation.isPending ? "Uploading..." : "Upload File"}
-                </Button>
-            </Space>
+            <Row gutter={[16, 16]} justify="center" style={{ marginBottom: 20 }}>
+                <Col xs={24} sm={12} md={8}>
+                    <Space direction="vertical" style={{ width: "100%" }}>
+                        <Input
+                            type="file"
+                            onChange={(e) => setFileToUpload(e.target.files ? e.target.files[0] : null)}
+                            style={{ width: "100%" }}
+                        />
+                        <Button
+                            type="primary"
+                            onClick={() => fileToUpload && uploadMutation.mutate(fileToUpload)}
+                            disabled={!fileToUpload || uploadMutation.isPending}
+                            style={{ width: "100%" }}
+                        >
+                            {uploadMutation.isPending ? "Uploading..." : "Upload File"}
+                        </Button>
+                    </Space>
+                </Col>
+            </Row>
 
             {/* File List */}
             <Table
@@ -142,6 +148,7 @@ export const ImagesTable: React.FC = () => {
                 rowKey="name"
                 loading={isLoading}
                 pagination={{ pageSize: 5 }}
+                scroll={{ x: true }} // Enables horizontal scrolling on smaller screens
             />
 
             {/* Image Preview Modal */}

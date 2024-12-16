@@ -29,7 +29,7 @@ export const ProductTable: React.FC = () => {
     // Filter products based on selected size
 
     return (
-        <Content className="p-[2.5vw]  shadow-xl rounded-xl bg-white">
+        <Content className="px-[1vw] py-[2.5vh]  shadow-xl rounded-xl bg-white">
             <Typography.Title level={5} >
                 Manage products
             </Typography.Title>
