@@ -12,6 +12,7 @@ import {
 import { Button, Input, Table, Space, Modal, message, Tooltip } from "antd";
 import { CopyOutlined, EyeOutlined } from "@ant-design/icons";
 import { FirebaseApp } from "../../utils/FireBase";
+import { Content } from "antd/es/layout/layout";
 const storage = getStorage(FirebaseApp);
 
 export const ImagesTable: React.FC = () => {
@@ -116,7 +117,7 @@ export const ImagesTable: React.FC = () => {
     };
 
     return (
-        <div style={{ padding: 20 }}>
+        <Content className="p-[3.5vw] shadow-xl rounded-xl bg-white">
             <h1>Firebase Storage Manager</h1>
 
             {/* File Upload */}
@@ -177,6 +178,6 @@ export const ImagesTable: React.FC = () => {
                     </Button>
                 </div>
             </Modal>
-        </div>
+        </Content>
     );
 };

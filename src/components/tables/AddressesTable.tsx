@@ -10,7 +10,7 @@ export const AddressTable: React.FC = () => {
     // Filter products based on selected size
 
     return (
-        <Content className="p-[2vw] shadow-xl rounded-xl bg-white">
+        <Content className="p-[3.5vw] shadow-xl rounded-xl bg-white">
             <Typography.Title level={5} >
                 Manage users
             </Typography.Title>
