@@ -27,8 +27,8 @@ export const SizesTable: React.FC = () => {
     // Filter products based on selected size
 
     return (
-        <Content className="py-[1vh]  rounded-md bg-white">
-            <Typography.Title level={5} style={{marginLeft:'0.5vw'}} >
+        <Content className="py-[1vh] flex items-center text-center align-middle justify-start rounded-md bg-white">
+            <Typography.Title level={5} style={{marginLeft:'24px'}} >
                 Manage sizes
             </Typography.Title>
             <DynamicTable
