@@ -128,7 +128,23 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
                     )}
                 </Space>
             ),
-        }] : [])
+        }] : []),
+        ...(showStatus ? [{
+            title: 'Status',
+            key: 'status',
+            render: (_: any, record: any) => (
+                <Select
+                    defaultValue={record.status}
+                    onChange={(value) => handleStatusChange(value, record)}
+                    style={{ width: 120 }}
+                >
+                    <Select.Option value="Processing">Processing</Select.Option>
+                    <Select.Option value="Pending">Pending</Select.Option>
+                    <Select.Option value="Cancelled">Cancelled</Select.Option>
+                    <Select.Option value="Completed">Completed</Select.Option>
+                </Select>
+            ),
+        }] : []),
     ];
 
     const isValidImageUrl = (url: any) => {
@@ -176,12 +192,10 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
         setCurrentItem({ ...currentItem, size: value });
     };
 
-    const handleStatusChange = (value: string) => {
+    const handleStatusChange = (value: string, record: any) => {
         // If `handleChangeStatus` prop is passed, use it
         if (handleChangeStatus) {
-            handleChangeStatus(value, currentItem);
-        } else {
-            setCurrentItem({ ...currentItem, status: value });
+            handleChangeStatus(value, record);
         }
     };
 
@@ -201,24 +215,6 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
                                     {size.title}
                                 </Select.Option>
                             ))}
-                        </Select>
-                    </Form.Item>
-                );
-            }
-
-            // Conditionally render the status field if showStatus is true
-            if (showStatus && key === 'status') {
-                return (
-                    <Form.Item label="Status" key={key}>
-                        <Select
-                            value={value}
-                            onChange={handleStatusChange}
-                            placeholder="Select Status"
-                        >
-                            <Select.Option value="Processing">Processing</Select.Option>
-                            <Select.Option value="Pending">Pending</Select.Option>
-                            <Select.Option value="Cancelled">Cancelled</Select.Option>
-                            <Select.Option value="Completed">Completed</Select.Option>
                         </Select>
                     </Form.Item>
                 );
