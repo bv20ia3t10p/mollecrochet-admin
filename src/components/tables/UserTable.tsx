@@ -9,8 +9,8 @@ export const UserTable: React.FC = () => {
     // Filter products based on selected size
 
     return (
-        <Content className="p-[2.5vw]  rounded-md bg-white">
-            <Typography.Title level={5} >
+        <Content className="p-[2vw]  rounded-md bg-white">
+            <Typography.Title level={5} style={{marginLeft:'2.5vw'}} >
                 Manage users
             </Typography.Title>
             <DynamicTable

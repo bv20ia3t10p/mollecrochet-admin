@@ -24,8 +24,8 @@ export const OrderTable: React.FC = () => {
     };
 
     return (
-        <Content className="p-[2.5vw] rounded-md bg-white">
-            <Typography.Title level={5}>
+        <Content className="p-[2vw] rounded-md bg-white">
+            <Typography.Title style={{marginLeft:'2.5vw'}}  level={5}>
                 Manage orders
             </Typography.Title>
             <DynamicTable
