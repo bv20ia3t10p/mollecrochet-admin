@@ -234,6 +234,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
 
     return (
         <>
+            <Divider />
             {canCreate &&
                 <Row style={{ marginBottom: 16 }} className='items-end justify-end w-full'>
                     <Col>
@@ -246,7 +247,6 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
             }
             {isLoading ? <Table columns={[]} dataSource={[]} /> : (
                 <>
-                    <Divider />
                     <Table
                         columns={columns}
                         dataSource={data}
