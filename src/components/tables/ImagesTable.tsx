@@ -9,7 +9,8 @@ import {
     deleteObject,
     getStorage,
 } from "firebase/storage";
-import { Button, Input, Table, Space, Modal, message } from "antd";
+import { Button, Input, Table, Space, Modal, message, Tooltip } from "antd";
+import { CopyOutlined, EyeOutlined } from "@ant-design/icons";
 import { FirebaseApp } from "../../utils/FireBase";
 const storage = getStorage(FirebaseApp);
 
@@ -17,6 +18,7 @@ export const ImagesTable: React.FC = () => {
     const queryClient = useQueryClient();
     const [fileToUpload, setFileToUpload] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [urlToCopy, setUrlToCopy] = useState<string | null>(null);
 
     // Fetch files from Firebase Storage
     const fetchFiles = async () => {
@@ -32,38 +34,34 @@ export const ImagesTable: React.FC = () => {
     const { data: files, isLoading } = useQuery({ queryKey: ["files"], queryFn: fetchFiles });
 
     // Mutation for uploading a file
-    const uploadMutation = useMutation(
-        {
-            mutationFn: async (file: File) => {
-                const fileRef = ref(storage, file.name);
-                await uploadBytes(fileRef, file);
-            },
-            onSuccess: () => {
-                message.success("File uploaded successfully!");
-                queryClient.invalidateQueries({ queryKey: ["files"] }); // Refresh file list
-            },
-            onError: () => {
-                message.error("Error uploading file!");
-            },
-        }
-    );
+    const uploadMutation = useMutation({
+        mutationFn: async (file: File) => {
+            const fileRef = ref(storage, file.name);
+            await uploadBytes(fileRef, file);
+        },
+        onSuccess: () => {
+            message.success("File uploaded successfully!");
+            queryClient.invalidateQueries({ queryKey: ["files"] }); // Refresh file list
+        },
+        onError: () => {
+            message.error("Error uploading file!");
+        },
+    });
 
     // Mutation for deleting a file
-    const deleteMutation = useMutation(
-        {
-            mutationFn: async (fileName: any) => {
-                const fileRef = ref(storage, fileName);
-                await deleteObject(fileRef);
-            },
-            onSuccess: () => {
-                message.success("File deleted successfully!");
-                queryClient.invalidateQueries({ queryKey: ["files"] }); // Refresh file list
-            },
-            onError: () => {
-                message.error("Error deleting file!");
-            },
-        }
-    );
+    const deleteMutation = useMutation({
+        mutationFn: async (fileName: any) => {
+            const fileRef = ref(storage, fileName);
+            await deleteObject(fileRef);
+        },
+        onSuccess: () => {
+            message.success("File deleted successfully!");
+            queryClient.invalidateQueries({ queryKey: ["files"] }); // Refresh file list
+        },
+        onError: () => {
+            message.error("Error deleting file!");
+        },
+    });
 
     // Ant Design table columns
     const columns = [
@@ -77,9 +75,13 @@ export const ImagesTable: React.FC = () => {
             dataIndex: "url",
             key: "url",
             render: (url: string) => (
-                <a href={url} target="_blank" rel="noopener noreferrer">
-                    {url}
-                </a>
+                <Tooltip title="Click to view URL">
+                    <Button
+                        type="link"
+                        icon={<EyeOutlined />}
+                        onClick={() => setUrlToCopy(url)}
+                    />
+                </Tooltip>
             ),
         },
         {
@@ -106,6 +108,12 @@ export const ImagesTable: React.FC = () => {
             ),
         },
     ];
+
+    const copyToClipboard = (url: string) => {
+        navigator.clipboard.writeText(url).then(() => {
+            message.success("URL copied to clipboard!");
+        });
+    };
 
     return (
         <div style={{ padding: 20 }}>
@@ -149,6 +157,25 @@ export const ImagesTable: React.FC = () => {
                         style={{ width: "100%", height: "auto" }}
                     />
                 )}
+            </Modal>
+
+            {/* URL Copy Modal */}
+            <Modal
+                visible={!!urlToCopy}
+                footer={null}
+                onCancel={() => setUrlToCopy(null)}
+                title="File URL"
+            >
+                <div>
+                    <p>{urlToCopy}</p>
+                    <Button
+                        type="primary"
+                        icon={<CopyOutlined />}
+                        onClick={() => urlToCopy && copyToClipboard(urlToCopy)}
+                    >
+                        Copy to Clipboard
+                    </Button>
+                </div>
             </Modal>
         </div>
     );
