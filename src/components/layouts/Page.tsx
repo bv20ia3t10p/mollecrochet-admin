@@ -71,7 +71,7 @@ export const Page: React.FC<IProp> = ({ children }) => {
                                 navi("/manage/comments");
                                 break;
                             case '8':
-                                navi("/login");
+                                navi("/");
                                 localStorage.clear();
                                 break;
                             default:
