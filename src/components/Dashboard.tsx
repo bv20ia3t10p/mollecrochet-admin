@@ -1,6 +1,5 @@
 import { DollarCircleOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import { Card, Col, Divider, Progress, Row, Statistic } from 'antd';
-import { Content } from 'antd/es/layout/layout';
 import React from 'react';
 import useFirestoreCollection from '../hooks/useFirestoreCollection';
 import { OrderTable } from './tables/OrderTable';
@@ -53,7 +52,7 @@ const Dashboard: React.FC = () => {
     const uniqueOrderedUserCount = countUniqueUidsInOrders(orders ?? [], users ?? []);
 
     return (
-        <Content>
+        <>
             <Row gutter={16}>
                 {/* Total Users */}
                 <Col className='mt-4'>
@@ -116,7 +115,7 @@ const Dashboard: React.FC = () => {
                     </Card>
                 </Col>
             </Row>
-        </Content>
+        </>
     );
 };
 
