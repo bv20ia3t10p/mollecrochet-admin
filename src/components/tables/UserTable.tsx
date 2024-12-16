@@ -10,7 +10,7 @@ export const UserTable: React.FC = () => {
 
     return (
         <Content className="py-[1vh]  rounded-md bg-white">
-            <Typography.Title level={5} style={{marginLeft:'2.5vw'}} >
+            <Typography.Title level={5} style={{marginLeft:'0.5vw'}} >
                 Manage users
             </Typography.Title>
             <DynamicTable

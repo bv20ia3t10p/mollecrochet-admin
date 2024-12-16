@@ -131,7 +131,7 @@ export const ImagesTable: React.FC = () => {
 
     return (
         <Content className="py-[1vh] rounded-md bg-white">
-            <Typography.Title level={5} style={{marginLeft:'2.5vw'}}>Firebase Storage Manager</Typography.Title>
+            <Typography.Title level={5} style={{marginLeft:'0.5vw'}}>Firebase Storage Manager</Typography.Title>
 
             {/* File Upload */}
             <Row gutter={[16, 16]} justify="center" style={{ marginBottom: 20 }}>
