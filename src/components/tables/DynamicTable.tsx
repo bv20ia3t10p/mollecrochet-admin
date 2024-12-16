@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { Table, Button, Input, Space, Modal, Tooltip, Form, Select, Row, Col } from 'antd';
+import { Table, Button, Input, Space, Modal, Tooltip, Form, Select, Row, Col, Divider } from 'antd';
 import { ColumnType } from 'antd/es/table';
 import { EditOutlined, DeleteOutlined, EyeOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 
@@ -245,13 +245,16 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
                 </Row>
             }
             {isLoading ? <Table columns={[]} dataSource={[]} /> : (
-                <Table
-                    columns={columns}
-                    dataSource={data}
-                    rowKey={(record) => record['id'] || Math.random().toString(36).substring(2, 15)}
-                    pagination={{ pageSize: 10 }}
-                    scroll={{ x: 'max-content' }}
-                />
+                <>
+                    <Divider />
+                    <Table
+                        columns={columns}
+                        dataSource={data}
+                        rowKey={(record) => record['id'] || Math.random().toString(36).substring(2, 15)}
+                        pagination={{ pageSize: 10 }}
+                        scroll={{ x: 'max-content' }}
+                    />
+                </>
             )}
 
             {/* Image Preview Modal */}
